@@ -1,9 +1,12 @@
-name: Azure Static Web Apps CI/CD
+name: azure-static-web-apps-salmon-mud-061917e03
 
 on:
   push:
     branches:
       - master
+    paths:
+      - 'reactclient/**'
+      - '.github/workflows/**'
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
