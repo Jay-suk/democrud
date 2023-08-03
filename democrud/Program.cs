@@ -1,5 +1,6 @@
 using aspnetserver.Data;
 using Microsoft.OpenApi.Models;
+using System.ComponentModel.DataAnnotations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +12,7 @@ builder.Services.AddCors(options =>
             builder
             .AllowAnyMethod()
             .AllowAnyHeader()
-            .WithOrigins("http://localhost:3000", "https://calm-water-04859b403.azurestaticapps.net");
+            .WithOrigins("http://localhost:3000", "https://salmon-mud-061917e03.3.azurestaticapps.net");
         });
 });
 
@@ -56,6 +57,14 @@ app.MapGet("/get-post-by-id/{postId}", async (int postId) =>
 
 app.MapPost("/create-post", async (Post postToCreate) =>
 {
+    var context = new ValidationContext(postToCreate, serviceProvider: null, items: null);
+    var validationResults = new List<ValidationResult>();
+
+    if (!Validator.TryValidateObject(postToCreate, context, validationResults, validateAllProperties: true))
+    {
+        var errorMessages = validationResults.Select(result => result.ErrorMessage);
+        return Results.BadRequest(string.Join(" ", errorMessages));
+    }
     bool createSuccessful = await PostsRepository.CreatePostAsync(postToCreate);
 
     if (createSuccessful)
@@ -66,10 +75,19 @@ app.MapPost("/create-post", async (Post postToCreate) =>
     {
         return Results.BadRequest();
     }
+    
 }).WithTags("Posts Endpoints");
 
 app.MapPut("/update-post", async (Post postToUpdate) =>
 {
+    var context = new ValidationContext(postToUpdate, serviceProvider: null, items: null);
+    var validationResults = new List<ValidationResult>();
+
+    if (!Validator.TryValidateObject(postToUpdate, context, validationResults, validateAllProperties: true))
+    {
+        var errorMessages = validationResults.Select(result => result.ErrorMessage);
+        return Results.BadRequest(string.Join(" ", errorMessages));
+    }
     bool updateSuccessful = await PostsRepository.UpdatePostAsync(postToUpdate);
 
     if (updateSuccessful)

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 
 namespace aspnetserver.Data
 {
@@ -16,8 +17,7 @@ namespace aspnetserver.Data
         {
             using (var db = new AppDBContext())
             {
-                return await db.Posts
-                    .FirstOrDefaultAsync(post => post.PostId == postId);
+                return await db.Posts.FirstOrDefaultAsync(post => post.PostId == postId);
             }
         }
 

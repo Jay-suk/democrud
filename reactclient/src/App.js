@@ -16,6 +16,7 @@ export default function App() {
     })
       .then(response => response.json())
       .then(postsFromServer => {
+        console.log(postsFromServer);
         setPosts(postsFromServer);
       })
       .catch((error) => {
@@ -50,12 +51,11 @@ export default function App() {
               <h1>CRUD Application</h1>
 
               <div className="mt-5">
-                <button onClick={getPosts} className="btn btn-dark btn-lg w-100">Get Posts from server</button>
-                <button onClick={() => setShowingCreateNewPostForm(true)} className="btn btn-secondary btn-lg w-100 mt-4">Create New Post</button>
+                <button onClick={getPosts} className="btn btn-dark btn-lg w-100">Get Users from server</button>
+                <button onClick={() => setShowingCreateNewPostForm(true)} className="btn btn-secondary btn-lg w-100 mt-4">Add New User</button>
               </div>
             </div>
           )}
-
           {(posts.length > 0 && showingCreateNewPostForm === false && postCurrentlyBeingUpdated === null) && renderPostsTable()}
 
           {showingCreateNewPostForm && <PostCreateForm onPostCreated={onPostCreated} />}
@@ -72,9 +72,11 @@ export default function App() {
         <table className="table table-bordered border-dark">
           <thead>
             <tr>
-              <th scope="col">PostId (PK)</th>
-              <th scope="col">Title</th>
-              <th scope="col">Content</th>
+              <th scope="col">User No.</th>
+              <th scope="col">FirstName</th>
+              <th scope="col">LastName</th>
+              <th scope="col">Age</th>
+              <th scope="col">MobileNo</th>
               <th scope="col">CRUD Operations</th>
             </tr>
           </thead>
@@ -82,18 +84,20 @@ export default function App() {
             {posts.map((post) => (
               <tr key={post.postId}>
                 <th scope="row">{post.postId}</th>
-                <td>{post.title}</td>
-                <td>{post.content}</td>
+                <td>{post.firstName}</td>
+                <td>{post.lastName}</td>
+                <td>{post.age}</td>
+                <td>{post.mobileNo}</td>
                 <td>
                   <button onClick={() => setPostCurrentlyBeingUpdated(post)} className="btn btn-dark btn-lg mx-3 my-3">Update</button>
-                  <button onClick={() => { if(window.confirm(`Are you sure you want to delete the post titled "${post.title}"?`)) deletePost(post.postId) }} className="btn btn-secondary btn-lg">Delete</button>
+                  <button onClick={() => { if(window.confirm(`Are you sure you want to delete the user named "${post.firstName} ${post.lastName}"?`)) deletePost(post.postId) }} className="btn btn-secondary btn-lg">Delete</button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
 
-        <button onClick={() => setPosts([])} className="btn btn-dark btn-lg w-100">Empty React posts array</button>
+        <button onClick={() => setPosts([])} className="btn btn-dark btn-lg w-100">Hide Table</button>
       </div>
     );
   }
@@ -105,7 +109,7 @@ export default function App() {
       return;
     }
 
-    alert(`Post successfully created.`);
+    alert(`User data successfully added.`);
 
     getPosts();
   }
@@ -131,7 +135,7 @@ export default function App() {
 
     setPosts(postsCopy);
 
-    alert(`Post successfully updated.`);
+    alert(`User data successfully updated.`);
   }
 
   function onPostDeleted(deletedPostPostId) {
@@ -149,6 +153,6 @@ export default function App() {
 
     setPosts(postsCopy);
 
-    alert('Post successfully deleted.');
+    alert('User data successfully deleted.');
   }
 }

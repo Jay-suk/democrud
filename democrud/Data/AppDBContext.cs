@@ -19,8 +19,10 @@ namespace aspnetserver.Data
                 postsToSeed[i - 1] = new Post
                 {
                     PostId = i,
-                    Title = $"Post {i}",
-                    Content = $"This is post {i}"
+                    FirstName = "Demo",
+                    LastName = $"Name{i}",
+                    MobileNo = $"123456789{i}",
+                    Age = i
                 };
             }
 
